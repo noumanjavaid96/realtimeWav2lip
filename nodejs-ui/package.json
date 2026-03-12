@@ -1,0 +1,24 @@
+{
+  "name": "realtime-wav2lip-ui",
+  "version": "1.0.0",
+  "description": "Node.js UI for Real-time Wav2Lip Avatar Talking Solution",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node --test test/server.test.js"
+  },
+  "keywords": [
+    "wav2lip",
+    "avatar",
+    "realtime",
+    "lip-sync"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2",
+    "http-proxy-middleware": "^3.0.3",
+    "multer": "^2.1.1",
+    "socket.io": "^4.8.1"
+  }
+}
