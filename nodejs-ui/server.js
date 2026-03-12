@@ -4,6 +4,7 @@ const path = require('path');
 const multer = require('multer');
 const { Server } = require('socket.io');
 const { createProxyMiddleware } = require('http-proxy-middleware');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 const server = http.createServer(app);
@@ -11,6 +12,15 @@ const io = new Server(server);
 
 const PORT = process.env.PORT || 3000;
 const FLASK_BACKEND = process.env.FLASK_BACKEND || 'http://localhost:8080';
+
+// --- Rate limiting ---
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later' },
+});
 
 // --- Multer setup for image uploads ---
 const storage = multer.memoryStorage();
@@ -31,12 +41,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // --- Views ---
-app.get('/', (_req, res) => {
+app.get('/', apiLimiter, (_req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
 // --- Upload proxy: forward image to Flask backend ---
-app.post('/upload', upload.single('image'), async (req, res) => {
+app.post('/upload', apiLimiter, upload.single('image'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No image file provided' });
@@ -68,7 +78,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 });
 
 // --- Start / Stop / Clear controls proxy ---
-app.post('/control', async (req, res) => {
+app.post('/control', apiLimiter, async (req, res) => {
   try {
     const { action } = req.body; // 'start', 'stop', or 'clear'
     const formBody = new URLSearchParams();
