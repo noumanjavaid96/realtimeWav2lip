@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wav2Lip Realtime Avatar</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-logo">🤖</span>
+      <span class="sidebar-title">Wav2Lip<br><small>Realtime Avatar</small></span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="/" class="nav-item active">
+        <span class="nav-icon">🎬</span> Playground
+      </a>
+      <a href="https://github.com/noumanjavaid96/realtimeWav2lip" target="_blank" class="nav-item">
+        <span class="nav-icon">📖</span> Documentation
+      </a>
+      <a href="https://github.com/noumanjavaid96/realtimeWav2lip" target="_blank" class="nav-item">
+        <span class="nav-icon">💻</span> GitHub
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="connection-badge" id="connectionBadge">
+        <span class="dot"></span> <span id="connectionText">Connecting…</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== Main Content ===== -->
+  <main class="main-content">
+    <!-- Top bar -->
+    <header class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+      <h1 class="page-title">Live Realtime Avatar</h1>
+    </header>
+
+    <!-- Status toast area -->
+    <div class="toast-area" id="toastArea"></div>
+
+    <!-- Dashboard grid -->
+    <div class="dashboard">
+      <!-- Card 1: Upload -->
+      <section class="card upload-card">
+        <div class="card-header">
+          <h2>1 &middot; Upload Avatar Image</h2>
+        </div>
+        <div class="card-body">
+          <div class="dropzone" id="dropzone">
+            <input type="file" id="fileInput" accept="image/*" hidden>
+            <div class="dropzone-content" id="dropzoneContent">
+              <div class="dropzone-icon">📁</div>
+              <p>Drag &amp; drop an image here<br>or <strong>click to browse</strong></p>
+              <small>Supports JPG, PNG, GIF &middot; Max 10 MB</small>
+            </div>
+            <img id="previewImage" class="preview-image" alt="Preview" hidden>
+          </div>
+          <div class="file-info" id="fileInfo" hidden>
+            <span id="fileName"></span>
+            <button class="btn btn-sm btn-outline" id="clearFile">✕</button>
+          </div>
+          <button class="btn btn-primary btn-block" id="uploadBtn" disabled>
+            <span class="btn-text">Upload Image</span>
+            <span class="spinner" hidden></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Card 2: Controls -->
+      <section class="card controls-card">
+        <div class="card-header">
+          <h2>2 &middot; Lip-Sync Controls</h2>
+        </div>
+        <div class="card-body controls-body">
+          <p class="hint">Upload an avatar image, then press <strong>Start</strong> and speak into your microphone.</p>
+          <div class="control-buttons">
+            <button class="btn btn-success" id="startBtn">
+              <span class="btn-icon">▶</span> Start
+            </button>
+            <button class="btn btn-danger" id="stopBtn">
+              <span class="btn-icon">■</span> Stop
+            </button>
+          </div>
+          <div class="status-panel" id="statusPanel">
+            <div class="status-item">
+              <span class="status-label">Backend</span>
+              <span class="status-value" id="backendStatus">Checking…</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">Session</span>
+              <span class="status-value" id="sessionStatus">Idle</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Card 3: Video Feed -->
+      <section class="card video-card">
+        <div class="card-header">
+          <h2>3 &middot; Realtime Avatar Feed 🔉👄</h2>
+        </div>
+        <div class="card-body video-body">
+          <div class="video-container" id="videoContainer">
+            <div class="video-placeholder" id="videoPlaceholder">
+              <div class="placeholder-icon">🎥</div>
+              <p>Avatar video feed will appear here<br>once you start the session</p>
+            </div>
+            <img id="videoFeed" class="video-feed" src="" alt="Realtime avatar video feed" hidden>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
